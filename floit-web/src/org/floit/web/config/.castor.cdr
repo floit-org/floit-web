@@ -1,0 +1,19 @@
+#Fri Feb 20 22:03:00 GMT 2015
+org.floit.web.config.PageType=org.floit.web.config.descriptors.PageTypeDescriptor
+org.floit.web.config.FlowSet=org.floit.web.config.descriptors.FlowSetDescriptor
+org.floit.web.config.Flow=org.floit.web.config.descriptors.FlowDescriptor
+org.floit.web.config.SetType=org.floit.web.config.descriptors.SetTypeDescriptor
+org.floit.web.config.Includes=org.floit.web.config.descriptors.IncludesDescriptor
+org.floit.web.config.Page=org.floit.web.config.descriptors.PageDescriptor
+org.floit.web.config.BrowserAction=org.floit.web.config.descriptors.BrowserActionDescriptor
+org.floit.web.config.PageSet=org.floit.web.config.descriptors.PageSetDescriptor
+org.floit.web.config.Pages=org.floit.web.config.descriptors.PagesDescriptor
+org.floit.web.config.Input=org.floit.web.config.descriptors.InputDescriptor
+org.floit.web.config.TestConfig=org.floit.web.config.descriptors.TestConfigDescriptor
+org.floit.web.config.PageElement=org.floit.web.config.descriptors.PageElementDescriptor
+org.floit.web.config.SearchTerms=org.floit.web.config.descriptors.SearchTermsDescriptor
+org.floit.web.config.PageElements=org.floit.web.config.descriptors.PageElementsDescriptor
+org.floit.web.config.Action=org.floit.web.config.descriptors.ActionDescriptor
+org.floit.web.config.PageElementType=org.floit.web.config.descriptors.PageElementTypeDescriptor
+org.floit.web.config.Include=org.floit.web.config.descriptors.IncludeDescriptor
+org.floit.web.config.Progress=org.floit.web.config.descriptors.ProgressDescriptor

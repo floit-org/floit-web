@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="properties/" kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/castor/castor-1.3-anttasks.jar"/>
+	<classpathentry kind="lib" path="lib/castor/castor-1.3-codegen.jar"/>
+	<classpathentry kind="lib" path="lib/castor/castor-1.3-core.jar"/>
+	<classpathentry kind="lib" path="lib/castor/castor-1.3-xml-schema.jar"/>
+	<classpathentry kind="lib" path="lib/castor/castor-1.3-xml.jar"/>
+	<classpathentry kind="lib" path="lib/castor/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/castor/velocity-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/ant-1.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/asm-3.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/asm-attrs-1.5.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-tree-3.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/axis-saaj-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/j2ee-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/saaj-impl-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/selenium-server-standalone-2.41.0.jar"/>
+	<classpathentry kind="lib" path="lib/serializer-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/testng-5.14.2.jar"/>
+	<classpathentry kind="lib" path="lib/xalan-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl-2.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

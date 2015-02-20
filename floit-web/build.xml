@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================                                                    
+
+     Project: Floit   
+     Author:     
+     Description:
+                                                                                  
+     ====================================================================== -->
+<project name="GUITestFramework" default="jar" basedir=".">
+	
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="dist.dir" value="${basedir}/dist"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="lib.castor.dir" value="${basedir}/lib/castor"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="jar.name" value="flowit.jar"/>
+	<property name="test.schema.dir" value="${basedir}/schema"/>
+	<property name="build.javadocs" value="${basedir}/javadoc"/>
+	
+	<!-- ================================================================== -->
+	<!-- Add the required jars to the classpath                             -->
+	<!-- ================================================================== -->	
+	<target name="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<path id="common.classpath">
+	        <fileset dir="${lib.dir}">
+	            <include name="**/*.jar"/>
+	        </fileset>
+	        <fileset dir="${lib.castor.dir}">
+	            <include name="**/*.jar"/>
+	        </fileset>						
+	    </path>		
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Jar the framework source code                                -->
+	<!-- ================================================================== -->	
+	<target name="jar" depends="compile">
+		<echo>Building Jar...</echo>
+		<delete dir="${dist.dir}/${jar.name}"/>
+        <jar jarfile="${dist.dir}/${jar.name}">
+            <!-- Include all compiled class files -->
+            <fileset dir="${build.dir}">
+                <include name="**/*"/>
+            </fileset>
+        </jar>	
+	</target>
+	
+	<!-- ================================================================== -->
+	<!-- Compile source code                                -->
+	<!-- ================================================================== -->	
+	<target name="compile" depends="init, source-gen">
+		<echo>Compiling framework code...</echo>
+		<javac srcdir="${src.dir}" target="1.6" source="1.6" 
+            destdir="${build.dir}" debug="true">
+			<classpath>
+                <path refid="common.classpath" />
+            </classpath>
+		</javac>		
+	</target>
+	
+	<!-- ================================================================== -->
+	<!-- Generate source code from schema                                -->
+	<!-- ================================================================== -->
+	<target name="source-gen" depends="init" description="Generates the source code from the schema.">
+		<echo>Generating source code from schema ...</echo>
+	    
+		<taskdef name="castor-srcgen"
+	             classname="org.castor.anttask.CastorCodeGenTask"
+	             classpathref="common.classpath" />
+    	
+		<mkdir dir="${src.dir}" />
+	    
+		<castor-srcgen todir="${src.dir}"
+	                   package="org.floit.web.config"
+	                   types="j2"
+	                   warnings="false" verbose="true">
+			
+	       <fileset dir="${test.schema.dir}">
+	          <include name="TestConfig.xsd"/>
+	       </fileset>
+			
+	    </castor-srcgen>		
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- Builds the JavaDoc                                                  -->
+	<!-- =================================================================== -->
+	<target name="javadoc" depends="init">
+		<javadoc destdir="${build.javadocs}">
+			<sourcepath>
+				<fileset dir="${src.dir}">
+					<include name="**/*.java" />
+				</fileset>
+			</sourcepath>
+			<packageset dir="${src.dir}" />
+			<classpath>
+				<pathelement path="${src.dir}/" />
+				<pathelement path="${common.classpath}/"/>
+				<fileset dir="${dist.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javadoc>
+	</target>	
+	
+</project>

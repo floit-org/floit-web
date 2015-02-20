@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2013 (http://www.altova.com) by Kieran Cummins (The TAS Group) -->
+<xs:schema xmlns="http://www.floit.org/guitest" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.floit.org/guitest" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="TestConfig">
+		<xs:annotation>
+			<xs:documentation>Defines the test config for Flowit's GUI test harness</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Includes" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>A collection of included test configuration files</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Include" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Details of an included test configuration. This test config will be accessible to the test framework and can be used in the same way as the parent test config. NOTE: Includes within included files will be ignored to prevent circular references</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:attribute name="Path" use="required">
+										<xs:annotation>
+											<xs:documentation>The location of the test config on the file system. This can be a relative or absolute path</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="ID" use="required">
+										<xs:annotation>
+											<xs:documentation>The ID is used to reference the imported test config within the test framework. Only upper and lower case chars are permitted.</xs:documentation>
+										</xs:annotation>
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:minLength value="1"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FlowSet" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Collection of pages flow definitions. Each flow defines a set of web pages. The sequence of pages must be a logical path through a web application</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Flow" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Defines a valid web flow, which is a logical sequence of web pages through a web application.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Pages">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Page" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:complexContent>
+																<xs:extension base="PageType"/>
+															</xs:complexContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required">
+										<xs:annotation>
+											<xs:documentation>Identifies the flow using a friendly name</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+									<xs:attribute name="Description" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Describes the purpose of the flow set.</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="PageSet">
+					<xs:annotation>
+						<xs:documentation>Collection of page definitions. Each of the page are grouped together to define a page flow.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Page" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Describes the elements on a web page from a test perspective. The elements are expressed as a collection of Inputs.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="PageType"/>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Component" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:complexContent>
+										<xs:extension base="ComponentType">
+											<xs:attribute name="ReferenceID" use="required">
+												<xs:annotation>
+													<xs:documentation>Will be used by a page to reference this component definition</xs:documentation>
+												</xs:annotation>
+											</xs:attribute>
+										</xs:extension>
+									</xs:complexContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="PageType">
+		<xs:sequence>
+			<xs:element name="Input" type="InputType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Represents an element or entity on the web page.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Progress" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Defines how the test harness should progress to the next page in the sequence. The default action is the first in the sequence.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="ProgressType">
+							<xs:sequence>
+								<xs:element name="BrowserAction" minOccurs="0" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>Simulates browser button functionality.</xs:documentation>
+									</xs:annotation>
+									<xs:complexType>
+										<xs:attribute name="Name"/>
+										<xs:attribute name="Type">
+											<xs:annotation>
+												<xs:documentation>The type of browser action to take. Currently Back and Refresh are supported</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="Back"/>
+													<xs:enumeration value="Refresh"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:attribute>
+										<xs:attribute name="Enabled" type="xs:boolean">
+											<xs:annotation>
+												<xs:documentation>Sets whether the browser action is to be performed or not</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="Index" type="xs:int"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SearchTerms" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Collection of serach terms used to verify the content on the page</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Item" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Search terms are used by the test harness to verify that current page. The HTML page is searched for the terms, the strength of the match will determine if the page is correct.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PageElements" type="PageElementType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A collection of page elements</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Component" type="ComponentType" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Represents a complex web component such as a dialog or widget. Will have similar features Page type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Name" use="required">
+			<xs:annotation>
+				<xs:documentation>Identifies the page using a friendly name</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PreProcess" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Boolean attribute to enable preprocessing of the page</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PreProcessor" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The plug-in which is to be used to preprocess the page</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ProgressActionEnabled" type="xs:boolean"/>
+		<xs:attribute name="IncludeId" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>This page is defined in an external configuration file identified by the IncludedId. The external configration file must be included in the main or primary config. See /TestConfig/Includes for more details.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="IsPopupWindow" type="xs:boolean"/>
+		<xs:attribute name="PopupWindowLocator" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="PageElementType">
+		<xs:sequence>
+			<xs:element name="PageElement" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A page element is an entity within the web page that must exist before the page is deemed loaded. Typical example is an AJAX call load a search panel. Processing of the page will not commence until all page elements have loaded by the browser.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="Locator" type="xs:string" use="required">
+						<xs:annotation>
+							<xs:documentation>The HMTL element identifier that associated the input element</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="WaitAfter" type="xs:int">
+						<xs:annotation>
+							<xs:documentation>The length of time in miliseconds to wait for an element to load. If no wait is defined then the default pause time will be used.</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:attributeGroup name="CommonAttr">
+		<xs:annotation>
+			<xs:documentation>Common mandatory attribute set</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="Name" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Defines the name friendly of entity</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Locator" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Defines the Locator of the action element. Typically it will be link of submit button etc.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:complexType name="InputType">
+		<xs:sequence>
+			<xs:element name="PageElements" type="PageElementType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A collection of page elements</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="CommonAttr"/>
+		<xs:attribute name="Value" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The input value required by the HTML element.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ClassRef" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The class the input refers to if its custom type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="WaitAfter" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The length of time in miliseconds to wait after setting this input</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Type">
+			<xs:annotation>
+				<xs:documentation>The type of HTML element; input, radio, checkbox, click, ajaz, select, multi-select, select-link.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:NMTOKEN">
+					<xs:enumeration value="radio"/>
+					<xs:enumeration value="click"/>
+					<xs:enumeration value="checkbox"/>
+					<xs:enumeration value="input"/>
+					<xs:enumeration value="select"/>
+					<xs:enumeration value="select-link"/>
+					<xs:enumeration value="multi-select"/>
+					<xs:enumeration value="file"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Required" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Indicates whether the element is mandatory or optional. Mandatory elements are required to progress to the next page.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PageElement" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>A page element is an entity within the web page that must exist before the page is deemed loaded. Typical example is an AJAX call load a search panel. Processing of the page will not commence until the page element has loaded by the browser. If more than one element is required please use the PageElements block instead</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ComponentType">
+		<xs:choice>
+			<xs:sequence>
+				<xs:element name="Input" type="InputType" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="PageElements" type="PageElementType" minOccurs="0"/>
+				<xs:element name="Progress" type="ProgressType"/>
+			</xs:sequence>
+			<xs:element name="Reference">
+				<xs:complexType>
+					<xs:attribute name="ID" use="required">
+						<xs:annotation>
+							<xs:documentation>References an existing component definition</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ProgressType">
+		<xs:sequence>
+			<xs:element name="Action" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Each action defines a progress path from the current HTML page to the next. E.g. a link or submit button. There can be multiple exit points on a page and each is defined by an Action</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="SpinnerURL" type="xs:string" use="optional">
+						<xs:annotation>
+							<xs:documentation>Defines the spinner URL to wait on for this action</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Index" type="xs:int"/>
+					<xs:attributeGroup ref="CommonAttr"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="ActionIndex" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>References an Action from the collection of Actions.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="ActionLocator">
+			<xs:annotation>
+				<xs:documentation>If no Action elements are defined then the progress action Locator can be defined here.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>
