@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ======================================================================                                                    
+<!--
+Copyright 2015 floit.org
 
-     Project: Floit   
-     Author:     
-     Description:
-                                                                                  
-     ====================================================================== -->
-<project name="GUITestFramework" default="jar" basedir=".">
-	
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<project name="floit-web" default="jar" basedir=".">
+
+	<description>Floit Web Automation Framework</description>
+	<property file="${basedir}/properties/build.properties"/>
+
+	<!-- project properties -->
+	<property name="release.properties.filename" value="${basedir}/properties/release.properties"/>
+	<property file="${release.properties.filename}"/>
+	<property name="build.number" value="${build.major.number}.${build.minor.number}.${build.revision.number}"/>
+
+	<condition property="project.version.classifier" value="-SNAPSHOT">
+		<equals casesensitive="true" arg1="${snapshot}" arg2="true"/>
+	</condition>
+
+	<property name="project.version.classifier" value=""/>
+	<property name="project.version" value="${build.number}${project.version.classifier}"/>
+
+	<!-- folders -->
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="dist.dir" value="${basedir}/dist"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
@@ -16,74 +40,111 @@
 	<property name="jar.name" value="flowit.jar"/>
 	<property name="test.schema.dir" value="${basedir}/schema"/>
 	<property name="build.javadocs" value="${basedir}/javadoc"/>
-	
+
+	<tstamp>
+		<format property="build.current.time" pattern="yyyyMMdd_HHmmss" />
+	</tstamp>
+
+	<echo>Floit Web Automation Framework ${project.version}.</echo>
+
+	<!-- ================================================================== -->
+	<!-- Release related targets -->
+	<!-- ================================================================== -->
+	<condition property="snapshot-build">
+		<and>
+			<isset property="snapshot" />
+			<equals arg1="true" arg2="${snapshot}" />
+		</and>
+	</condition>
+
+	<target name="release-prepare-fix" description="Release a fix version">
+		<propertyfile file="${release.properties.filename}">
+			<entry key="build.revision.number" type="int" operation="+" value="1" pattern="0" />
+		</propertyfile>
+	</target>
+
+	<target name="release-prepare-feature" description="Release a feature version">
+		<propertyfile file="${release.properties.filename}">
+			<entry key="build.minor.number" type="int" operation="+" value="1" pattern="0" />
+			<entry key="build.revision.number" type="int" value="0" pattern="0" />
+		</propertyfile>
+	</target>
+
+	<target name="release-prepare-major" description="Release a major version">
+		<propertyfile file="${release.properties.filename}">
+			<entry key="build.major.number" type="int" operation="+" value="1" pattern="0" />
+			<entry key="build.minor.number" type="int" value="0" pattern="0" />
+			<entry key="build.revision.number" type="int" value="0" pattern="0" />
+		</propertyfile>
+	</target>
+
 	<!-- ================================================================== -->
 	<!-- Add the required jars to the classpath                             -->
-	<!-- ================================================================== -->	
+	<!-- ================================================================== -->
 	<target name="init">
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${dist.dir}"/>
 		<path id="common.classpath">
-	        <fileset dir="${lib.dir}">
-	            <include name="**/*.jar"/>
-	        </fileset>
-	        <fileset dir="${lib.castor.dir}">
-	            <include name="**/*.jar"/>
-	        </fileset>						
-	    </path>		
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${lib.castor.dir}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</path>
 	</target>
 
 	<!-- ================================================================== -->
 	<!-- Jar the framework source code                                -->
-	<!-- ================================================================== -->	
+	<!-- ================================================================== -->
 	<target name="jar" depends="compile">
 		<echo>Building Jar...</echo>
 		<delete dir="${dist.dir}/${jar.name}"/>
-        <jar jarfile="${dist.dir}/${jar.name}">
-            <!-- Include all compiled class files -->
-            <fileset dir="${build.dir}">
-                <include name="**/*"/>
-            </fileset>
-        </jar>	
+		<jar jarfile="${dist.dir}/${jar.name}">
+			<!-- Include all compiled class files -->
+			<fileset dir="${build.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</jar>
 	</target>
-	
+
 	<!-- ================================================================== -->
 	<!-- Compile source code                                -->
-	<!-- ================================================================== -->	
+	<!-- ================================================================== -->
 	<target name="compile" depends="init, source-gen">
 		<echo>Compiling framework code...</echo>
 		<javac srcdir="${src.dir}" target="1.6" source="1.6" 
             destdir="${build.dir}" debug="true">
 			<classpath>
-                <path refid="common.classpath" />
-            </classpath>
-		</javac>		
+				<path refid="common.classpath" />
+			</classpath>
+		</javac>
 	</target>
-	
+
 	<!-- ================================================================== -->
 	<!-- Generate source code from schema                                -->
 	<!-- ================================================================== -->
 	<target name="source-gen" depends="init" description="Generates the source code from the schema.">
 		<echo>Generating source code from schema ...</echo>
-	    
+
 		<taskdef name="castor-srcgen"
 	             classname="org.castor.anttask.CastorCodeGenTask"
 	             classpathref="common.classpath" />
-    	
+
 		<mkdir dir="${src.dir}" />
-	    
+
 		<castor-srcgen todir="${src.dir}"
 	                   package="org.floit.web.config"
 	                   types="j2"
 	                   warnings="false" verbose="true">
-			
-	       <fileset dir="${test.schema.dir}">
-	          <include name="TestConfig.xsd"/>
-	       </fileset>
-			
-	    </castor-srcgen>		
+
+			<fileset dir="${test.schema.dir}">
+				<include name="TestConfig.xsd"/>
+			</fileset>
+
+		</castor-srcgen>
 	</target>
-	
+
 	<!-- =================================================================== -->
 	<!-- Builds the JavaDoc                                                  -->
 	<!-- =================================================================== -->
@@ -103,6 +164,6 @@
 				</fileset>
 			</classpath>
 		</javadoc>
-	</target>	
-	
+	</target>
+
 </project>
