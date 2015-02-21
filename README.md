@@ -1,4 +1,4 @@
-# floit-web
-Floit-web is web browser automation framework based on Selenium WebDriver  
+# floit-waf
+Floit Web Automation Framework is web browser automation framework based on Selenium WebDriver.
 
 Documentation to follow...
