@@ -134,7 +134,7 @@ limitations under the License.
 		<mkdir dir="${src.dir}" />
 
 		<castor-srcgen todir="${src.dir}"
-	                   package="org.floit.web.config"
+	                   package="org.floit.waf.config"
 	                   types="j2"
 	                   warnings="false" verbose="true">
 

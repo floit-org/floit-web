@@ -2,7 +2,7 @@ package org.floit.demo;
 
 import java.io.File;
 
-import org.floit.web.navigator.TestNavigator;
+import org.floit.waf.navigator.TestNavigator;
 
 public class TestGUIFramework {
 

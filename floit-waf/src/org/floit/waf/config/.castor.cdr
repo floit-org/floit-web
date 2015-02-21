@@ -1,0 +1,19 @@
+#Fri Feb 20 22:03:00 GMT 2015
+org.floit.waf.config.PageType=org.floit.waf.config.descriptors.PageTypeDescriptor
+org.floit.waf.config.FlowSet=org.floit.waf.config.descriptors.FlowSetDescriptor
+org.floit.waf.config.Flow=org.floit.waf.config.descriptors.FlowDescriptor
+org.floit.waf.config.SetType=org.floit.waf.config.descriptors.SetTypeDescriptor
+org.floit.waf.config.Includes=org.floit.waf.config.descriptors.IncludesDescriptor
+org.floit.waf.config.Page=org.floit.waf.config.descriptors.PageDescriptor
+org.floit.waf.config.BrowserAction=org.floit.waf.config.descriptors.BrowserActionDescriptor
+org.floit.waf.config.PageSet=org.floit.waf.config.descriptors.PageSetDescriptor
+org.floit.waf.config.Pages=org.floit.waf.config.descriptors.PagesDescriptor
+org.floit.waf.config.Input=org.floit.waf.config.descriptors.InputDescriptor
+org.floit.waf.config.TestConfig=org.floit.waf.config.descriptors.TestConfigDescriptor
+org.floit.waf.config.PageElement=org.floit.waf.config.descriptors.PageElementDescriptor
+org.floit.waf.config.SearchTerms=org.floit.waf.config.descriptors.SearchTermsDescriptor
+org.floit.waf.config.PageElements=org.floit.waf.config.descriptors.PageElementsDescriptor
+org.floit.waf.config.Action=org.floit.waf.config.descriptors.ActionDescriptor
+org.floit.waf.config.PageElementType=org.floit.waf.config.descriptors.PageElementTypeDescriptor
+org.floit.waf.config.Include=org.floit.waf.config.descriptors.IncludeDescriptor
+org.floit.waf.config.Progress=org.floit.waf.config.descriptors.ProgressDescriptor
